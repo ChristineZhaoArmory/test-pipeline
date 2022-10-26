@@ -1,0 +1,123 @@
+{
+  "appConfig": {},
+  "keepWaitingPipelines": false,
+  "lastModifiedBy": "anonymous",
+  "limitConcurrent": true,
+  "schema": "1",
+  "spelEvaluator": "v4",
+  "stages": [
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": true,
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook",
+      "refId": "1",
+      "requisiteStageRefIds": [],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "https://api.github.com/repos/ChristineZhaoArmory/parent-project/actions/runs"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": true,
+      "name": "Check Preconditions Complete",
+      "preconditions": [
+        {
+          "context": {
+            "expression": "${#stage(\"Webhook\").context.webhook.body.workflow_runs[0].status == 'completed'}"
+          },
+          "failPipeline": true,
+          "type": "expression"
+        }
+      ],
+      "refId": "2",
+      "requisiteStageRefIds": [
+        "3"
+      ],
+      "type": "checkPreconditions"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "Eval_RUN_ID",
+      "refId": "3",
+      "requisiteStageRefIds": [
+        "4"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "run_id",
+          "value": "${#stage(\"Webhook\").context.webhook.body.workflow_runs[0].id}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": true,
+      "failPipeline": false,
+      "name": "Check Preconditions in_progress",
+      "preconditions": [
+        {
+          "context": {
+            "expression": "${#stage(\"Webhook\").context.webhook.body.workflow_runs[0].status == 'in_progress'}"
+          },
+          "failPipeline": true,
+          "type": "expression"
+        }
+      ],
+      "refId": "4",
+      "requisiteStageRefIds": [
+        "1"
+      ],
+      "type": "checkPreconditions"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": true,
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook2",
+      "refId": "5",
+      "requisiteStageRefIds": [
+        "2"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "https://api.github.com/repos/ChristineZhaoArmory/parent-project/actions/runs/${run_id}"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": true,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "Eval_CONCLUSION",
+      "refId": "6",
+      "requisiteStageRefIds": [
+        "5"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "conclusion",
+          "value": "${#stage(\"Webhook2\").context.webhook.body.conclusion}"
+        }
+      ]
+    }
+  ],
+  "triggers": [
+    {
+      "application": "one",
+      "enabled": true,
+      "pipeline": "38e4246d-bfa5-4697-bc4d-89358c439a0a",
+      "status": [
+        "successful"
+      ],
+      "type": "pipeline"
+    }
+  ]
+}
