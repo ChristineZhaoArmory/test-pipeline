@@ -1,0 +1,36 @@
+{
+  "keepWaitingPipelines": false,
+  "lastModifiedBy": "anonymous",
+  "limitConcurrent": true,
+  "schema": "1",
+  "spelEvaluator": "v4",
+  "stages": [
+    {
+      "name": "Wait",
+      "refId": "1",
+      "requisiteStageRefIds": [],
+      "type": "wait",
+      "waitTime": 30
+    }
+  ],
+  "triggers": [
+    {
+      "application": "one",
+      "enabled": true,
+      "pipeline": "d2e9723a-ce9c-40c0-9efc-64698e548877",
+      "status": [
+        "failed"
+      ],
+      "type": "pipeline"
+    },
+    {
+      "application": "one",
+      "enabled": true,
+      "pipeline": "cc8adf18-bd08-45da-86e8-e57c81ea3750",
+      "status": [
+        "successful"
+      ],
+      "type": "pipeline"
+    }
+  ]
+}
