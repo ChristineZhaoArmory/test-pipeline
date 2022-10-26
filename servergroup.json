@@ -1,0 +1,416 @@
+{
+  "appConfig": {},
+  "keepWaitingPipelines": false,
+  "lastModifiedBy": "anonymous",
+  "limitConcurrent": true,
+  "parameterConfig": [
+    {
+      "default": "http://localhost:8084",
+      "description": "",
+      "hasOptions": false,
+      "label": "GATE_URL",
+      "name": "GATE_URL",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": true
+    }
+  ],
+  "schema": "1",
+  "spelEvaluator": "v4",
+  "stages": [
+    {
+      "cloudProvider": "ecs",
+      "cloudProviderType": "ecs",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": true,
+      "failPipeline": false,
+      "imageLabelOrSha": "<your amazon account>/christine-ecr:v1.0",
+      "name": "Find Image from Tags",
+      "refId": "2",
+      "requisiteStageRefIds": [],
+      "type": "findImageFromTags"
+    },
+    {
+      "clusters": [
+        {
+          "account": "christine-ecs",
+          "application": "servergroup",
+          "availabilityZones": {
+            "us-east-2": [
+              "us-east-2a",
+              "us-east-2b",
+              "us-east-2c"
+            ]
+          },
+          "capacity": {
+            "desired": 1,
+            "max": 1,
+            "min": 1
+          },
+          "capacityProviderStrategy": [],
+          "cloudProvider": "ecs",
+          "computeUnits": 256,
+          "copySourceScalingPoliciesAndActions": true,
+          "dockerImageCredentialsSecret": "None (No registry credentials)",
+          "dockerLabels": {},
+          "ecsClusterName": "christine-ecs",
+          "environmentVariables": {},
+          "healthCheckGracePeriodSeconds": "",
+          "healthCheckType": "EC2",
+          "iamRole": "aws-spin-support-managedrole",
+          "imageDescription": {
+            "fromContext": true,
+            "imageId": "<your amazon account>/christine-ecr:v1.0",
+            "imageLabelOrSha": "<your amazon account>/christine-ecr:v1.0",
+            "stageId": "2"
+          },
+          "launchType": "FARGATE",
+          "loadBalancers": [],
+          "moniker": {
+            "app": "servergroup",
+            "stack": "kb"
+          },
+          "networkMode": "awsvpc",
+          "placementConstraints": [],
+          "placementStrategyName": "",
+          "placementStrategySequence": [],
+          "preferSourceCapacity": true,
+          "provider": "ecs",
+          "reservedMemory": 1024,
+          "securityGroupNames": [],
+          "serviceDiscoveryAssociations": [],
+          "stack": "kb",
+          "strategy": "",
+          "subnetType": "",
+          "subnetTypes": [
+            "support-cluster"
+          ],
+          "tags": {},
+          "targetGroup": "",
+          "targetGroupMappings": [],
+          "taskDefinitionArtifact": {},
+          "useSourceCapacity": true,
+          "useTaskDefinitionArtifact": false
+        }
+      ],
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": true,
+      "failOnFailedExpressions": false,
+      "failPipeline": false,
+      "name": "Deploy",
+      "refId": "3",
+      "requisiteStageRefIds": [
+        "2",
+        "6"
+      ],
+      "stageTimeoutMs": 60000,
+      "type": "deploy"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": true,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "EvaluateDeploy",
+      "refId": "4",
+      "requisiteStageRefIds": [
+        "11"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "deploy",
+          "value": "${#stage(\"Deploy\").context}"
+        },
+        {
+          "key": "errorCreated",
+          "value": "${delta > 0}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": true,
+      "failFastStatusCodes": [],
+      "failPipeline": false,
+      "method": "GET",
+      "name": "WebhookBefore",
+      "refId": "5",
+      "requisiteStageRefIds": [],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/servergroup/serverGroups",
+      "waitForCompletion": true
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": true,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "EvaluateWebhook",
+      "refId": "6",
+      "requisiteStageRefIds": [
+        "5"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "alreadyDeployedBeforeRun",
+          "value": "${#stage(\"WebhookBefore\").context.webhook.body}"
+        },
+        {
+          "key": "before_body0_name",
+          "value": "${#stage(\"WebhookBefore\").context.webhook.body[0].name}"
+        },
+        {
+          "key": "sizeOfAlready",
+          "value": "${alreadyDeployedBeforeRun.size()}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "name": "CheckErrorCreated",
+      "preconditions": [
+        {
+          "context": {
+            "expression": "${errorCreated}"
+          },
+          "failPipeline": false,
+          "type": "expression"
+        }
+      ],
+      "refId": "7",
+      "requisiteStageRefIds": [
+        "4"
+      ],
+      "type": "checkPreconditions"
+    },
+    {
+      "cloudProvider": "ecs",
+      "cloudProviderType": "ecs",
+      "cluster": "servergroup-kb",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "credentials": "christine-ecs",
+      "failPipeline": false,
+      "moniker": {
+        "app": "servergroup",
+        "cluster": "servergroup-kb",
+        "stack": "kb"
+      },
+      "name": "Destroy Server Group",
+      "refId": "8",
+      "regions": [
+        "us-east-2"
+      ],
+      "requisiteStageRefIds": [
+        "7"
+      ],
+      "target": "current_asg_dynamic",
+      "type": "destroyServerGroup"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "name": "CheckNoErrorCreated",
+      "preconditions": [
+        {
+          "context": {
+            "expression": "${!errorCreated}"
+          },
+          "failPipeline": false,
+          "type": "expression"
+        }
+      ],
+      "refId": "9",
+      "requisiteStageRefIds": [
+        "4"
+      ],
+      "type": "checkPreconditions"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": true,
+      "failPipeline": false,
+      "method": "GET",
+      "name": "WebhookAfter",
+      "refId": "10",
+      "requisiteStageRefIds": [
+        "12"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/servergroup/serverGroups",
+      "waitForCompletion": true
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": true,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "EvaluateWebhookAfter",
+      "refId": "11",
+      "requisiteStageRefIds": [
+        "10"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "afterDeployServerGroup",
+          "value": "${#stage(\"WebhookAfter\").context.webhook.body}"
+        },
+        {
+          "key": "after_body0_name",
+          "value": "${afterDeployServerGroup[0].name}"
+        },
+        {
+          "key": "sizeOfAfter",
+          "value": "${afterDeployServerGroup.size()}"
+        },
+        {
+          "key": "delta",
+          "value": "${sizeOfAfter-sizeOfAlready}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "name": "CheckDeployFail",
+      "preconditions": [
+        {
+          "context": {
+            "stageName": "Deploy",
+            "stageStatus": "FAILED_CONTINUE"
+          },
+          "failPipeline": true,
+          "type": "stageStatus"
+        }
+      ],
+      "refId": "12",
+      "requisiteStageRefIds": [
+        "3"
+      ],
+      "type": "checkPreconditions"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "name": "CheckSuccessByClusterSize",
+      "preconditions": [
+        {
+          "cloudProvider": "ecs",
+          "context": {
+            "cluster": "servergroup-kb",
+            "comparison": ">=",
+            "credentials": "christine-ecs",
+            "expected": 8,
+            "moniker": {
+              "app": "servergroup",
+              "cluster": "servergroup-kb",
+              "stack": "kb"
+            },
+            "regions": [
+              "us-east-2"
+            ]
+          },
+          "failPipeline": true,
+          "type": "clusterSize"
+        }
+      ],
+      "refId": "13",
+      "requisiteStageRefIds": [
+        "3"
+      ],
+      "type": "checkPreconditions"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "name": "CheckSuccessByStageCondition",
+      "preconditions": [
+        {
+          "context": {
+            "stageName": "Deploy",
+            "stageStatus": "SUCCEEDED"
+          },
+          "failPipeline": true,
+          "type": "stageStatus"
+        }
+      ],
+      "refId": "15",
+      "requisiteStageRefIds": [
+        "3"
+      ],
+      "type": "checkPreconditions"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "EvaluateForFun",
+      "refId": "17",
+      "requisiteStageRefIds": [
+        "15"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "deployedServerGroup",
+          "value": "${#deployedServerGroups()}"
+        },
+        {
+          "key": "deployedServerGroupName",
+          "value": "${deployedServerGroup[0].serverGroup}"
+        },
+        {
+          "key": "includeNew",
+          "value": "${alreadyDeployedBeforeRun.toString().contains(deployedServerGroupName)}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "name": "Wait0",
+      "refId": "18",
+      "requisiteStageRefIds": [
+        "13"
+      ],
+      "type": "wait",
+      "waitTime": 3
+    },
+    {
+      "name": "Wait1",
+      "refId": "19",
+      "requisiteStageRefIds": [
+        "8"
+      ],
+      "type": "wait",
+      "waitTime": 3
+    },
+    {
+      "name": "Wait2",
+      "refId": "20",
+      "requisiteStageRefIds": [
+        "9"
+      ],
+      "type": "wait",
+      "waitTime": 30
+    }
+  ],
+  "triggers": []
+}
