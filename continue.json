@@ -1,0 +1,27 @@
+{
+  "keepWaitingPipelines": false,
+  "lastModifiedBy": "anonymous",
+  "limitConcurrent": true,
+  "schema": "1",
+  "spelEvaluator": "v4",
+  "stages": [
+    {
+      "name": "Continue the rest of the Pipeline ...",
+      "refId": "3",
+      "requisiteStageRefIds": [],
+      "type": "wait",
+      "waitTime": 3
+    }
+  ],
+  "triggers": [
+    {
+      "application": "one",
+      "enabled": true,
+      "pipeline": "d2e9723a-ce9c-40c0-9efc-64698e548877",
+      "status": [
+        "successful"
+      ],
+      "type": "pipeline"
+    }
+  ]
+}
