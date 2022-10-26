@@ -1,0 +1,314 @@
+{
+  "appConfig": {},
+  "keepWaitingPipelines": false,
+  "lastModifiedBy": "anonymous",
+  "limitConcurrent": true,
+  "parameterConfig": [
+    {
+      "default": "deployment%20the-deployment",
+      "description": "",
+      "hasOptions": false,
+      "label": "clusterName",
+      "name": "clusterName",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": false
+    },
+    {
+      "default": "http://localhost:8084/",
+      "description": "http://localhost:8084/webjars/swagger-ui/index.html?url=/v2/api-docs&configUrl=/swagger-resources/configuration/ui",
+      "hasOptions": false,
+      "label": "GATE_URL",
+      "name": "GATE_URL",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": false
+    },
+    {
+      "default": "spinnaker",
+      "description": "",
+      "hasOptions": false,
+      "label": "account",
+      "name": "account",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": false
+    },
+    {
+      "default": "one",
+      "description": "",
+      "hasOptions": false,
+      "label": "application",
+      "name": "application",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": false
+    }
+  ],
+  "schema": "1",
+  "spelEvaluator": "v4",
+  "stages": [
+    {
+      "account": "spinnaker",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "manifestArtifactId": "fe49610a-1c20-4352-8c56-1739765cce41",
+      "moniker": {
+        "app": "one"
+      },
+      "name": "Deploy KUSTOMIZE",
+      "namespaceOverride": "christine-demo",
+      "refId": "2",
+      "requiredArtifactIds": [],
+      "requiredArtifacts": [],
+      "requisiteStageRefIds": [
+        "3"
+      ],
+      "skipExpressionEvaluation": true,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false
+        }
+      },
+      "type": "deployManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "expectedArtifacts": [
+        {
+          "defaultArtifact": {
+            "customKind": true,
+            "id": "d4c9552b-d83b-463c-8ea7-a0fbff6f4fd7"
+          },
+          "displayName": "hot-lionfish-54",
+          "id": "fe49610a-1c20-4352-8c56-1739765cce41",
+          "matchArtifact": {
+            "artifactAccount": "embedded-artifact",
+            "customKind": false,
+            "id": "809d8029-2886-44dc-a426-8f534e290583",
+            "type": "embedded/base64"
+          },
+          "useDefaultArtifact": false,
+          "usePriorArtifact": false
+        }
+      ],
+      "failPipeline": false,
+      "inputArtifact": {
+        "account": "gitrepo",
+        "artifact": {
+          "artifactAccount": "gitrepo",
+          "customKind": true,
+          "id": "20b1fbfc-a06d-4bd9-9768-6389d85ba09b",
+          "location": "helloWorld",
+          "reference": "https://github.com/ChristineZhaoArmory/one-step",
+          "type": "git/repo",
+          "version": "main"
+        }
+      },
+      "inputArtifacts": null,
+      "kustomizeFilePath": "helloWorld/kustomization.yaml",
+      "name": "Bake KUSTOMIZE",
+      "overrides": {},
+      "refId": "3",
+      "requisiteStageRefIds": [],
+      "restrictExecutionDuringTimeWindow": false,
+      "restrictedExecutionWindow": {
+        "days": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          5
+        ],
+        "whitelist": []
+      },
+      "templateRenderer": "KUSTOMIZE",
+      "type": "bakeManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failFastStatusCodes": [],
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook1",
+      "refId": "6",
+      "requisiteStageRefIds": [
+        "9"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}/${parameters.clusterName}",
+      "waitForCompletion": true
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E1",
+      "refId": "7",
+      "requisiteStageRefIds": [
+        "6"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook1",
+          "value": "${#stage(\"Webhook1\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E0",
+      "refId": "9",
+      "requisiteStageRefIds": [
+        "2"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "manifests",
+          "value": "${#stage(\"Deploy KUSTOMIZE\").outputs.manifests}"
+        },
+        {
+          "key": "output",
+          "value": "${#stage(\"Deploy KUSTOMIZE\").outputs}"
+        },
+        {
+          "key": "artifacts",
+          "value": "${#stage(\"Deploy KUSTOMIZE\").outputs.artifacts}"
+        },
+        {
+          "key": "abc",
+          "value": "${#stage(\"Deploy KUSTOMIZE\").outputs}"
+        }
+      ]
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "christine-demo",
+      "manifestName": "deployment the-deployment",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "10",
+      "requisiteStageRefIds": [
+        "13"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "christine-demo",
+      "manifestName": "service the-service",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "11",
+      "requisiteStageRefIds": [
+        "10"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "christine-demo",
+      "manifestName": "configMap the-map",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "12",
+      "requisiteStageRefIds": [
+        "11"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "failPipeline": true,
+      "judgmentInputs": [],
+      "name": "Manual Judgment",
+      "notifications": [],
+      "refId": "13",
+      "requisiteStageRefIds": [
+        "15"
+      ],
+      "type": "manualJudgment"
+    },
+    {
+      "method": "GET",
+      "name": "Webhook2",
+      "refId": "14",
+      "requisiteStageRefIds": [
+        "7"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}"
+    },
+    {
+      "failOnFailedExpressions": true,
+      "name": "E3",
+      "refId": "15",
+      "requisiteStageRefIds": [
+        "14"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook2",
+          "value": "${#stage(\"Webhook2\").context.webhook.body}"
+        }
+      ]
+    }
+  ],
+  "triggers": []
+}
