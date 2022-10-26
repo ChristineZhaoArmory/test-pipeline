@@ -111,7 +111,7 @@
   ],
   "triggers": [
     {
-      "application": "one",
+      "application": "github",
       "enabled": true,
       "pipeline": "38e4246d-bfa5-4697-bc4d-89358c439a0a",
       "status": [
