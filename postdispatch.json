@@ -1,0 +1,32 @@
+{
+  "appConfig": {},
+  "keepWaitingPipelines": false,
+  "lastModifiedBy": "anonymous",
+  "limitConcurrent": true,
+  "schema": "1",
+  "spelEvaluator": "v4",
+  "stages": [
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "customHeaders": {
+        "Accept": "application/vnd.github.v3+json",
+        "Authorization": "Bearer <token>"
+      },
+      "failFastStatusCodes": [],
+      "failPipeline": true,
+      "method": "POST",
+      "name": "post-parent-dispatches",
+      "payload": {
+        "event_type": "webhook"
+      },
+      "refId": "1",
+      "requisiteStageRefIds": [],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "https://api.github.com/repos/ChristineZhaoArmory/parent-project/dispatches",
+      "waitForCompletion": false
+    }
+  ],
+  "triggers": []
+}
