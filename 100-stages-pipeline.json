@@ -1,0 +1,2575 @@
+{
+  "appConfig": {},
+  "keepWaitingPipelines": false,
+  "lastModifiedBy": "anonymous",
+  "limitConcurrent": true,
+  "parameterConfig": [
+    {
+      "default": "deployment%20the-deployment",
+      "description": "",
+      "hasOptions": false,
+      "label": "clusterName",
+      "name": "clusterName",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": false
+    },
+    {
+      "default": "http://localhost:8084/",
+      "description": "http://localhost:8084/webjars/swagger-ui/index.html?url=/v2/api-docs&configUrl=/swagger-resources/configuration/ui",
+      "hasOptions": false,
+      "label": "GATE_URL",
+      "name": "GATE_URL",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": false
+    },
+    {
+      "default": "spinnaker",
+      "description": "",
+      "hasOptions": false,
+      "label": "account",
+      "name": "account",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": false
+    },
+    {
+      "default": "one",
+      "description": "",
+      "hasOptions": false,
+      "label": "application",
+      "name": "application",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": false
+    },
+    {
+      "default": "the-deployment",
+      "description": "",
+      "hasOptions": false,
+      "label": "DEPLOYMENT",
+      "name": "DEPLOYMENT",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": false
+    },
+    {
+      "default": "the-service",
+      "description": "",
+      "hasOptions": false,
+      "label": "SERVICE",
+      "name": "SERVICE",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": false
+    },
+    {
+      "default": "the-map",
+      "description": "",
+      "hasOptions": false,
+      "label": "CONFIGMAP",
+      "name": "CONFIGMAP",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": false
+    },
+    {
+      "default": "christine-demo",
+      "description": "",
+      "hasOptions": false,
+      "label": "TARGET_NAMESPACE",
+      "name": "TARGET_NAMESPACE",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": false
+    },
+    {
+      "default": "https://github.com/ChristineZhaoArmory/one-step",
+      "description": "",
+      "hasOptions": false,
+      "label": "BAKE_URL",
+      "name": "BAKE_URL",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": false
+    },
+    {
+      "default": "main",
+      "description": "",
+      "hasOptions": false,
+      "label": "BAKE_BRANCH",
+      "name": "BAKE_BRANCH",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": false
+    },
+    {
+      "default": "helloWorld",
+      "description": "",
+      "hasOptions": false,
+      "label": "BAKE_SUBPATH",
+      "name": "BAKE_SUBPATH",
+      "options": [
+        {
+          "value": ""
+        }
+      ],
+      "pinned": false,
+      "required": false
+    }
+  ],
+  "schema": "1",
+  "spelEvaluator": "v4",
+  "stages": [
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "expectedArtifacts": [
+        {
+          "defaultArtifact": {
+            "customKind": true,
+            "id": "d4c9552b-d83b-463c-8ea7-a0fbff6f4fd7"
+          },
+          "displayName": "hot-lionfish-54",
+          "id": "fe49610a-1c20-4352-8c56-1739765cce41",
+          "matchArtifact": {
+            "artifactAccount": "embedded-artifact",
+            "customKind": false,
+            "id": "809d8029-2886-44dc-a426-8f534e290583",
+            "type": "embedded/base64"
+          },
+          "useDefaultArtifact": false,
+          "usePriorArtifact": false
+        }
+      ],
+      "failPipeline": false,
+      "inputArtifact": {
+        "account": "gitrepo",
+        "artifact": {
+          "artifactAccount": "gitrepo",
+          "customKind": true,
+          "id": "20b1fbfc-a06d-4bd9-9768-6389d85ba09b",
+          "location": "${parameters.BAKE_SUBPATH}",
+          "reference": "${parameters.BAKE_URL}",
+          "type": "git/repo",
+          "version": "${parameters.BAKE_BRANCH}"
+        }
+      },
+      "kustomizeFilePath": "helloWorld/kustomization.yaml",
+      "name": "Bake KUSTOMIZE",
+      "overrides": {},
+      "refId": "1",
+      "requisiteStageRefIds": [],
+      "restrictExecutionDuringTimeWindow": false,
+      "restrictedExecutionWindow": {
+        "days": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          5
+        ],
+        "whitelist": []
+      },
+      "templateRenderer": "KUSTOMIZE",
+      "type": "bakeManifest"
+    },
+    {
+      "account": "spinnaker",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "manifestArtifactId": "fe49610a-1c20-4352-8c56-1739765cce41",
+      "moniker": {
+        "app": "one"
+      },
+      "name": "Deploy 1",
+      "namespaceOverride": "${parameters.TARGET_NAMESPACE}",
+      "refId": "2",
+      "requiredArtifactIds": [],
+      "requiredArtifacts": [],
+      "requisiteStageRefIds": [
+        "1"
+      ],
+      "skipExpressionEvaluation": true,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false
+        }
+      },
+      "type": "deployManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E10",
+      "refId": "3",
+      "requisiteStageRefIds": [
+        "2"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "manifests",
+          "value": "${#stage(\"Deploy 1\").outputs.manifests}"
+        },
+        {
+          "key": "output",
+          "value": "${#stage(\"Deploy 1\").outputs}"
+        },
+        {
+          "key": "artifacts",
+          "value": "${#stage(\"Deploy 1\").outputs.artifacts}"
+        },
+        {
+          "key": "abc",
+          "value": "${#stage(\"Deploy 1\").outputs}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failFastStatusCodes": [],
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook11",
+      "refId": "4",
+      "requisiteStageRefIds": [
+        "3"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}/${parameters.clusterName}",
+      "waitForCompletion": true
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E11",
+      "refId": "5",
+      "requisiteStageRefIds": [
+        "4"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook11",
+          "value": "${#stage(\"Webhook11\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook12",
+      "refId": "6",
+      "requisiteStageRefIds": [
+        "5"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E12",
+      "refId": "7",
+      "requisiteStageRefIds": [
+        "6"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook12",
+          "value": "${#stage(\"Webhook12\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "deployment ${parameters.DEPLOYMENT}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "8",
+      "requisiteStageRefIds": [
+        "7"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "service ${parameters.SERVICE}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "9",
+      "requisiteStageRefIds": [
+        "8"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "configMap ${parameters.CONFIGMAP}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "10",
+      "requisiteStageRefIds": [
+        "9"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "expectedArtifacts": [
+        {
+          "defaultArtifact": {
+            "customKind": true,
+            "id": "d4c9552b-d83b-463c-8ea7-a0fbff6f4fd7"
+          },
+          "displayName": "hot-lionfish-54",
+          "id": "fe49610a-1c20-4352-8c56-1739765cce41",
+          "matchArtifact": {
+            "artifactAccount": "embedded-artifact",
+            "customKind": false,
+            "id": "809d8029-2886-44dc-a426-8f534e290583",
+            "type": "embedded/base64"
+          },
+          "useDefaultArtifact": false,
+          "usePriorArtifact": false
+        }
+      ],
+      "failPipeline": false,
+      "inputArtifact": {
+        "account": "gitrepo",
+        "artifact": {
+          "artifactAccount": "gitrepo",
+          "customKind": true,
+          "id": "20b1fbfc-a06d-4bd9-9768-6389d85ba09b",
+          "location": "${parameters.BAKE_SUBPATH}",
+          "reference": "${parameters.BAKE_URL}",
+          "type": "git/repo",
+          "version": "${parameters.BAKE_BRANCH}"
+        }
+      },
+      "kustomizeFilePath": "helloWorld/kustomization.yaml",
+      "name": "Bake KUSTOMIZE",
+      "overrides": {},
+      "refId": "11",
+      "requisiteStageRefIds": [
+        "10"
+      ],
+      "restrictExecutionDuringTimeWindow": false,
+      "restrictedExecutionWindow": {
+        "days": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          5
+        ],
+        "whitelist": []
+      },
+      "templateRenderer": "KUSTOMIZE",
+      "type": "bakeManifest"
+    },
+    {
+      "account": "spinnaker",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "manifestArtifactId": "fe49610a-1c20-4352-8c56-1739765cce41",
+      "moniker": {
+        "app": "one"
+      },
+      "name": "Deploy 2",
+      "namespaceOverride": "${parameters.TARGET_NAMESPACE}",
+      "refId": "12",
+      "requiredArtifactIds": [],
+      "requiredArtifacts": [],
+      "requisiteStageRefIds": [
+        "11"
+      ],
+      "skipExpressionEvaluation": true,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false
+        }
+      },
+      "type": "deployManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E20",
+      "refId": "13",
+      "requisiteStageRefIds": [
+        "12"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "manifests",
+          "value": "${#stage(\"Deploy 2\").outputs.manifests}"
+        },
+        {
+          "key": "output",
+          "value": "${#stage(\"Deploy 2\").outputs}"
+        },
+        {
+          "key": "artifacts",
+          "value": "${#stage(\"Deploy 2\").outputs.artifacts}"
+        },
+        {
+          "key": "abc",
+          "value": "${#stage(\"Deploy 2\").outputs}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failFastStatusCodes": [],
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook21",
+      "refId": "14",
+      "requisiteStageRefIds": [
+        "13"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}/${parameters.clusterName}",
+      "waitForCompletion": true
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E21",
+      "refId": "15",
+      "requisiteStageRefIds": [
+        "14"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook21",
+          "value": "${#stage(\"Webhook21\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook22",
+      "refId": "16",
+      "requisiteStageRefIds": [
+        "15"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E22",
+      "refId": "17",
+      "requisiteStageRefIds": [
+        "16"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook22",
+          "value": "${#stage(\"Webhook22\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "deployment ${parameters.DEPLOYMENT}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "18",
+      "requisiteStageRefIds": [
+        "17"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "service ${parameters.SERVICE}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "19",
+      "requisiteStageRefIds": [
+        "18"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "configMap ${parameters.CONFIGMAP}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "20",
+      "requisiteStageRefIds": [
+        "19"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "expectedArtifacts": [
+        {
+          "defaultArtifact": {
+            "customKind": true,
+            "id": "d4c9552b-d83b-463c-8ea7-a0fbff6f4fd7"
+          },
+          "displayName": "hot-lionfish-54",
+          "id": "fe49610a-1c20-4352-8c56-1739765cce41",
+          "matchArtifact": {
+            "artifactAccount": "embedded-artifact",
+            "customKind": false,
+            "id": "809d8029-2886-44dc-a426-8f534e290583",
+            "type": "embedded/base64"
+          },
+          "useDefaultArtifact": false,
+          "usePriorArtifact": false
+        }
+      ],
+      "failPipeline": false,
+      "inputArtifact": {
+        "account": "gitrepo",
+        "artifact": {
+          "artifactAccount": "gitrepo",
+          "customKind": true,
+          "id": "20b1fbfc-a06d-4bd9-9768-6389d85ba09b",
+          "location": "${parameters.BAKE_SUBPATH}",
+          "reference": "${parameters.BAKE_URL}",
+          "type": "git/repo",
+          "version": "${parameters.BAKE_BRANCH}"
+        }
+      },
+      "kustomizeFilePath": "helloWorld/kustomization.yaml",
+      "name": "Bake KUSTOMIZE",
+      "overrides": {},
+      "refId": "21",
+      "requisiteStageRefIds": [
+        "20"
+      ],
+      "restrictExecutionDuringTimeWindow": false,
+      "restrictedExecutionWindow": {
+        "days": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          5
+        ],
+        "whitelist": []
+      },
+      "templateRenderer": "KUSTOMIZE",
+      "type": "bakeManifest"
+    },
+    {
+      "account": "spinnaker",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "manifestArtifactId": "fe49610a-1c20-4352-8c56-1739765cce41",
+      "moniker": {
+        "app": "one"
+      },
+      "name": "Deploy 3",
+      "namespaceOverride": "${parameters.TARGET_NAMESPACE}",
+      "refId": "22",
+      "requiredArtifactIds": [],
+      "requiredArtifacts": [],
+      "requisiteStageRefIds": [
+        "21"
+      ],
+      "skipExpressionEvaluation": true,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false
+        }
+      },
+      "type": "deployManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E30",
+      "refId": "23",
+      "requisiteStageRefIds": [
+        "22"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "manifests",
+          "value": "${#stage(\"Deploy 3\").outputs.manifests}"
+        },
+        {
+          "key": "output",
+          "value": "${#stage(\"Deploy 3\").outputs}"
+        },
+        {
+          "key": "artifacts",
+          "value": "${#stage(\"Deploy 3\").outputs.artifacts}"
+        },
+        {
+          "key": "abc",
+          "value": "${#stage(\"Deploy 3\").outputs}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failFastStatusCodes": [],
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook31",
+      "refId": "24",
+      "requisiteStageRefIds": [
+        "23"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}/${parameters.clusterName}",
+      "waitForCompletion": true
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E31",
+      "refId": "25",
+      "requisiteStageRefIds": [
+        "24"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook31",
+          "value": "${#stage(\"Webhook31\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook32",
+      "refId": "26",
+      "requisiteStageRefIds": [
+        "25"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E32",
+      "refId": "27",
+      "requisiteStageRefIds": [
+        "26"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook32",
+          "value": "${#stage(\"Webhook32\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "deployment ${parameters.DEPLOYMENT}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "28",
+      "requisiteStageRefIds": [
+        "27"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "service ${parameters.SERVICE}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "29",
+      "requisiteStageRefIds": [
+        "28"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "configMap ${parameters.CONFIGMAP}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "30",
+      "requisiteStageRefIds": [
+        "29"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "expectedArtifacts": [
+        {
+          "defaultArtifact": {
+            "customKind": true,
+            "id": "d4c9552b-d83b-463c-8ea7-a0fbff6f4fd7"
+          },
+          "displayName": "hot-lionfish-54",
+          "id": "fe49610a-1c20-4352-8c56-1739765cce41",
+          "matchArtifact": {
+            "artifactAccount": "embedded-artifact",
+            "customKind": false,
+            "id": "809d8029-2886-44dc-a426-8f534e290583",
+            "type": "embedded/base64"
+          },
+          "useDefaultArtifact": false,
+          "usePriorArtifact": false
+        }
+      ],
+      "failPipeline": false,
+      "inputArtifact": {
+        "account": "gitrepo",
+        "artifact": {
+          "artifactAccount": "gitrepo",
+          "customKind": true,
+          "id": "20b1fbfc-a06d-4bd9-9768-6389d85ba09b",
+          "location": "${parameters.BAKE_SUBPATH}",
+          "reference": "${parameters.BAKE_URL}",
+          "type": "git/repo",
+          "version": "${parameters.BAKE_BRANCH}"
+        }
+      },
+      "kustomizeFilePath": "helloWorld/kustomization.yaml",
+      "name": "Bake KUSTOMIZE",
+      "overrides": {},
+      "refId": "31",
+      "requisiteStageRefIds": [
+        "30"
+      ],
+      "restrictExecutionDuringTimeWindow": false,
+      "restrictedExecutionWindow": {
+        "days": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          5
+        ],
+        "whitelist": []
+      },
+      "templateRenderer": "KUSTOMIZE",
+      "type": "bakeManifest"
+    },
+    {
+      "account": "spinnaker",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "manifestArtifactId": "fe49610a-1c20-4352-8c56-1739765cce41",
+      "moniker": {
+        "app": "one"
+      },
+      "name": "Deploy 4",
+      "namespaceOverride": "${parameters.TARGET_NAMESPACE}",
+      "refId": "32",
+      "requiredArtifactIds": [],
+      "requiredArtifacts": [],
+      "requisiteStageRefIds": [
+        "31"
+      ],
+      "skipExpressionEvaluation": true,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false
+        }
+      },
+      "type": "deployManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E40",
+      "refId": "33",
+      "requisiteStageRefIds": [
+        "32"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "manifests",
+          "value": "${#stage(\"Deploy 4\").outputs.manifests}"
+        },
+        {
+          "key": "output",
+          "value": "${#stage(\"Deploy 4\").outputs}"
+        },
+        {
+          "key": "artifacts",
+          "value": "${#stage(\"Deploy 4\").outputs.artifacts}"
+        },
+        {
+          "key": "abc",
+          "value": "${#stage(\"Deploy 4\").outputs}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failFastStatusCodes": [],
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook41",
+      "refId": "34",
+      "requisiteStageRefIds": [
+        "33"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}/${parameters.clusterName}",
+      "waitForCompletion": true
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E41",
+      "refId": "35",
+      "requisiteStageRefIds": [
+        "34"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook31",
+          "value": "${#stage(\"Webhook41\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook42",
+      "refId": "36",
+      "requisiteStageRefIds": [
+        "35"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E42",
+      "refId": "37",
+      "requisiteStageRefIds": [
+        "36"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook42",
+          "value": "${#stage(\"Webhook42\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "deployment ${parameters.DEPLOYMENT}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "38",
+      "requisiteStageRefIds": [
+        "37"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "service ${parameters.SERVICE}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "39",
+      "requisiteStageRefIds": [
+        "38"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "configMap ${parameters.CONFIGMAP}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "40",
+      "requisiteStageRefIds": [
+        "39"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "expectedArtifacts": [
+        {
+          "defaultArtifact": {
+            "customKind": true,
+            "id": "d4c9552b-d83b-463c-8ea7-a0fbff6f4fd7"
+          },
+          "displayName": "hot-lionfish-54",
+          "id": "fe49610a-1c20-4352-8c56-1739765cce41",
+          "matchArtifact": {
+            "artifactAccount": "embedded-artifact",
+            "customKind": false,
+            "id": "809d8029-2886-44dc-a426-8f534e290583",
+            "type": "embedded/base64"
+          },
+          "useDefaultArtifact": false,
+          "usePriorArtifact": false
+        }
+      ],
+      "failPipeline": false,
+      "inputArtifact": {
+        "account": "gitrepo",
+        "artifact": {
+          "artifactAccount": "gitrepo",
+          "customKind": true,
+          "id": "20b1fbfc-a06d-4bd9-9768-6389d85ba09b",
+          "location": "${parameters.BAKE_SUBPATH}",
+          "reference": "${parameters.BAKE_URL}",
+          "type": "git/repo",
+          "version": "${parameters.BAKE_BRANCH}"
+        }
+      },
+      "kustomizeFilePath": "helloWorld/kustomization.yaml",
+      "name": "Bake KUSTOMIZE",
+      "overrides": {},
+      "refId": "41",
+      "requisiteStageRefIds": [
+        "40"
+      ],
+      "restrictExecutionDuringTimeWindow": false,
+      "restrictedExecutionWindow": {
+        "days": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          5
+        ],
+        "whitelist": []
+      },
+      "templateRenderer": "KUSTOMIZE",
+      "type": "bakeManifest"
+    },
+    {
+      "account": "spinnaker",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "manifestArtifactId": "fe49610a-1c20-4352-8c56-1739765cce41",
+      "moniker": {
+        "app": "one"
+      },
+      "name": "Deploy 5",
+      "namespaceOverride": "${parameters.TARGET_NAMESPACE}",
+      "refId": "42",
+      "requiredArtifactIds": [],
+      "requiredArtifacts": [],
+      "requisiteStageRefIds": [
+        "41"
+      ],
+      "skipExpressionEvaluation": true,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false
+        }
+      },
+      "type": "deployManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E50",
+      "refId": "43",
+      "requisiteStageRefIds": [
+        "42"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "manifests",
+          "value": "${#stage(\"Deploy 5\").outputs.manifests}"
+        },
+        {
+          "key": "output",
+          "value": "${#stage(\"Deploy 5\").outputs}"
+        },
+        {
+          "key": "artifacts",
+          "value": "${#stage(\"Deploy 5\").outputs.artifacts}"
+        },
+        {
+          "key": "abc",
+          "value": "${#stage(\"Deploy 5\").outputs}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failFastStatusCodes": [],
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook51",
+      "refId": "44",
+      "requisiteStageRefIds": [
+        "43"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}/${parameters.clusterName}",
+      "waitForCompletion": true
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E51",
+      "refId": "45",
+      "requisiteStageRefIds": [
+        "44"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook51",
+          "value": "${#stage(\"Webhook51\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook52",
+      "refId": "46",
+      "requisiteStageRefIds": [
+        "45"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E52",
+      "refId": "47",
+      "requisiteStageRefIds": [
+        "46"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook52",
+          "value": "${#stage(\"Webhook52\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "deployment ${parameters.DEPLOYMENT}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "48",
+      "requisiteStageRefIds": [
+        "47"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "service ${parameters.SERVICE}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "49",
+      "requisiteStageRefIds": [
+        "48"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "configMap ${parameters.CONFIGMAP}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "50",
+      "requisiteStageRefIds": [
+        "49"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "expectedArtifacts": [
+        {
+          "defaultArtifact": {
+            "customKind": true,
+            "id": "d4c9552b-d83b-463c-8ea7-a0fbff6f4fd7"
+          },
+          "displayName": "hot-lionfish-54",
+          "id": "fe49610a-1c20-4352-8c56-1739765cce41",
+          "matchArtifact": {
+            "artifactAccount": "embedded-artifact",
+            "customKind": false,
+            "id": "809d8029-2886-44dc-a426-8f534e290583",
+            "type": "embedded/base64"
+          },
+          "useDefaultArtifact": false,
+          "usePriorArtifact": false
+        }
+      ],
+      "failPipeline": false,
+      "inputArtifact": {
+        "account": "gitrepo",
+        "artifact": {
+          "artifactAccount": "gitrepo",
+          "customKind": true,
+          "id": "20b1fbfc-a06d-4bd9-9768-6389d85ba09b",
+          "location": "${parameters.BAKE_SUBPATH}",
+          "reference": "${parameters.BAKE_URL}",
+          "type": "git/repo",
+          "version": "${parameters.BAKE_BRANCH}"
+        }
+      },
+      "kustomizeFilePath": "helloWorld/kustomization.yaml",
+      "name": "Bake KUSTOMIZE",
+      "overrides": {},
+      "refId": "51",
+      "requisiteStageRefIds": [
+        "50"
+      ],
+      "restrictExecutionDuringTimeWindow": false,
+      "restrictedExecutionWindow": {
+        "days": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          5
+        ],
+        "whitelist": []
+      },
+      "templateRenderer": "KUSTOMIZE",
+      "type": "bakeManifest"
+    },
+    {
+      "account": "spinnaker",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "manifestArtifactId": "fe49610a-1c20-4352-8c56-1739765cce41",
+      "moniker": {
+        "app": "one"
+      },
+      "name": "Deploy 6",
+      "namespaceOverride": "${parameters.TARGET_NAMESPACE}",
+      "refId": "52",
+      "requiredArtifactIds": [],
+      "requiredArtifacts": [],
+      "requisiteStageRefIds": [
+        "51"
+      ],
+      "skipExpressionEvaluation": true,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false
+        }
+      },
+      "type": "deployManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E60",
+      "refId": "53",
+      "requisiteStageRefIds": [
+        "52"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "manifests",
+          "value": "${#stage(\"Deploy 6\").outputs.manifests}"
+        },
+        {
+          "key": "output",
+          "value": "${#stage(\"Deploy 6\").outputs}"
+        },
+        {
+          "key": "artifacts",
+          "value": "${#stage(\"Deploy 6\").outputs.artifacts}"
+        },
+        {
+          "key": "abc",
+          "value": "${#stage(\"Deploy 6\").outputs}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failFastStatusCodes": [],
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook61",
+      "refId": "54",
+      "requisiteStageRefIds": [
+        "53"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}/${parameters.clusterName}",
+      "waitForCompletion": true
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E61",
+      "refId": "55",
+      "requisiteStageRefIds": [
+        "54"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook61",
+          "value": "${#stage(\"Webhook61\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook62",
+      "refId": "56",
+      "requisiteStageRefIds": [
+        "55"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E62",
+      "refId": "57",
+      "requisiteStageRefIds": [
+        "56"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook62",
+          "value": "${#stage(\"Webhook62\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "deployment ${parameters.DEPLOYMENT}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "58",
+      "requisiteStageRefIds": [
+        "57"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "service ${parameters.SERVICE}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "59",
+      "requisiteStageRefIds": [
+        "58"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "configMap ${parameters.CONFIGMAP}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "60",
+      "requisiteStageRefIds": [
+        "59"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "expectedArtifacts": [
+        {
+          "defaultArtifact": {
+            "customKind": true,
+            "id": "d4c9552b-d83b-463c-8ea7-a0fbff6f4fd7"
+          },
+          "displayName": "hot-lionfish-54",
+          "id": "fe49610a-1c20-4352-8c56-1739765cce41",
+          "matchArtifact": {
+            "artifactAccount": "embedded-artifact",
+            "customKind": false,
+            "id": "809d8029-2886-44dc-a426-8f534e290583",
+            "type": "embedded/base64"
+          },
+          "useDefaultArtifact": false,
+          "usePriorArtifact": false
+        }
+      ],
+      "failPipeline": false,
+      "inputArtifact": {
+        "account": "gitrepo",
+        "artifact": {
+          "artifactAccount": "gitrepo",
+          "customKind": true,
+          "id": "20b1fbfc-a06d-4bd9-9768-6389d85ba09b",
+          "location": "${parameters.BAKE_SUBPATH}",
+          "reference": "${parameters.BAKE_URL}",
+          "type": "git/repo",
+          "version": "${parameters.BAKE_BRANCH}"
+        }
+      },
+      "kustomizeFilePath": "helloWorld/kustomization.yaml",
+      "name": "Bake KUSTOMIZE",
+      "overrides": {},
+      "refId": "61",
+      "requisiteStageRefIds": [
+        "60"
+      ],
+      "restrictExecutionDuringTimeWindow": false,
+      "restrictedExecutionWindow": {
+        "days": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          5
+        ],
+        "whitelist": []
+      },
+      "templateRenderer": "KUSTOMIZE",
+      "type": "bakeManifest"
+    },
+    {
+      "account": "spinnaker",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "manifestArtifactId": "fe49610a-1c20-4352-8c56-1739765cce41",
+      "moniker": {
+        "app": "one"
+      },
+      "name": "Deploy 7",
+      "namespaceOverride": "${parameters.TARGET_NAMESPACE}",
+      "refId": "62",
+      "requiredArtifactIds": [],
+      "requiredArtifacts": [],
+      "requisiteStageRefIds": [
+        "61"
+      ],
+      "skipExpressionEvaluation": true,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false
+        }
+      },
+      "type": "deployManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E70",
+      "refId": "63",
+      "requisiteStageRefIds": [
+        "62"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "manifests",
+          "value": "${#stage(\"Deploy 7\").outputs.manifests}"
+        },
+        {
+          "key": "output",
+          "value": "${#stage(\"Deploy 7\").outputs}"
+        },
+        {
+          "key": "artifacts",
+          "value": "${#stage(\"Deploy 7\").outputs.artifacts}"
+        },
+        {
+          "key": "abc",
+          "value": "${#stage(\"Deploy 7\").outputs}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failFastStatusCodes": [],
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook71",
+      "refId": "64",
+      "requisiteStageRefIds": [
+        "63"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}/${parameters.clusterName}",
+      "waitForCompletion": true
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E71",
+      "refId": "65",
+      "requisiteStageRefIds": [
+        "64"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook61",
+          "value": "${#stage(\"Webhook61\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook72",
+      "refId": "66",
+      "requisiteStageRefIds": [
+        "65"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E72",
+      "refId": "67",
+      "requisiteStageRefIds": [
+        "66"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook72",
+          "value": "${#stage(\"Webhook72\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "deployment ${parameters.DEPLOYMENT}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "68",
+      "requisiteStageRefIds": [
+        "67"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "service ${parameters.SERVICE}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "69",
+      "requisiteStageRefIds": [
+        "68"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "configMap ${parameters.CONFIGMAP}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "70",
+      "requisiteStageRefIds": [
+        "69"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "expectedArtifacts": [
+        {
+          "defaultArtifact": {
+            "customKind": true,
+            "id": "d4c9552b-d83b-463c-8ea7-a0fbff6f4fd7"
+          },
+          "displayName": "hot-lionfish-54",
+          "id": "fe49610a-1c20-4352-8c56-1739765cce41",
+          "matchArtifact": {
+            "artifactAccount": "embedded-artifact",
+            "customKind": false,
+            "id": "809d8029-2886-44dc-a426-8f534e290583",
+            "type": "embedded/base64"
+          },
+          "useDefaultArtifact": false,
+          "usePriorArtifact": false
+        }
+      ],
+      "failPipeline": false,
+      "inputArtifact": {
+        "account": "gitrepo",
+        "artifact": {
+          "artifactAccount": "gitrepo",
+          "customKind": true,
+          "id": "20b1fbfc-a06d-4bd9-9768-6389d85ba09b",
+          "location": "${parameters.BAKE_SUBPATH}",
+          "reference": "${parameters.BAKE_URL}",
+          "type": "git/repo",
+          "version": "${parameters.BAKE_BRANCH}"
+        }
+      },
+      "kustomizeFilePath": "helloWorld/kustomization.yaml",
+      "name": "Bake KUSTOMIZE",
+      "overrides": {},
+      "refId": "71",
+      "requisiteStageRefIds": [
+        "70"
+      ],
+      "restrictExecutionDuringTimeWindow": false,
+      "restrictedExecutionWindow": {
+        "days": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          5
+        ],
+        "whitelist": []
+      },
+      "templateRenderer": "KUSTOMIZE",
+      "type": "bakeManifest"
+    },
+    {
+      "account": "spinnaker",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "manifestArtifactId": "fe49610a-1c20-4352-8c56-1739765cce41",
+      "moniker": {
+        "app": "one"
+      },
+      "name": "Deploy 8",
+      "namespaceOverride": "${parameters.TARGET_NAMESPACE}",
+      "refId": "72",
+      "requiredArtifactIds": [],
+      "requiredArtifacts": [],
+      "requisiteStageRefIds": [
+        "71"
+      ],
+      "skipExpressionEvaluation": true,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false
+        }
+      },
+      "type": "deployManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E80",
+      "refId": "73",
+      "requisiteStageRefIds": [
+        "72"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "manifests",
+          "value": "${#stage(\"Deploy 8\").outputs.manifests}"
+        },
+        {
+          "key": "output",
+          "value": "${#stage(\"Deploy 8\").outputs}"
+        },
+        {
+          "key": "artifacts",
+          "value": "${#stage(\"Deploy 8\").outputs.artifacts}"
+        },
+        {
+          "key": "abc",
+          "value": "${#stage(\"Deploy 8\").outputs}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failFastStatusCodes": [],
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook81",
+      "refId": "74",
+      "requisiteStageRefIds": [
+        "73"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}/${parameters.clusterName}",
+      "waitForCompletion": true
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E81",
+      "refId": "75",
+      "requisiteStageRefIds": [
+        "74"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook81",
+          "value": "${#stage(\"Webhook81\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook82",
+      "refId": "76",
+      "requisiteStageRefIds": [
+        "75"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E82",
+      "refId": "77",
+      "requisiteStageRefIds": [
+        "76"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook82",
+          "value": "${#stage(\"Webhook82\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "deployment ${parameters.DEPLOYMENT}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "78",
+      "requisiteStageRefIds": [
+        "77"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "service ${parameters.SERVICE}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "79",
+      "requisiteStageRefIds": [
+        "78"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "configMap ${parameters.CONFIGMAP}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "80",
+      "requisiteStageRefIds": [
+        "79"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "expectedArtifacts": [
+        {
+          "defaultArtifact": {
+            "customKind": true,
+            "id": "d4c9552b-d83b-463c-8ea7-a0fbff6f4fd7"
+          },
+          "displayName": "hot-lionfish-54",
+          "id": "fe49610a-1c20-4352-8c56-1739765cce41",
+          "matchArtifact": {
+            "artifactAccount": "embedded-artifact",
+            "customKind": false,
+            "id": "809d8029-2886-44dc-a426-8f534e290583",
+            "type": "embedded/base64"
+          },
+          "useDefaultArtifact": false,
+          "usePriorArtifact": false
+        }
+      ],
+      "failPipeline": false,
+      "inputArtifact": {
+        "account": "gitrepo",
+        "artifact": {
+          "artifactAccount": "gitrepo",
+          "customKind": true,
+          "id": "20b1fbfc-a06d-4bd9-9768-6389d85ba09b",
+          "location": "${parameters.BAKE_SUBPATH}",
+          "reference": "${parameters.BAKE_URL}",
+          "type": "git/repo",
+          "version": "${parameters.BAKE_BRANCH}"
+        }
+      },
+      "kustomizeFilePath": "helloWorld/kustomization.yaml",
+      "name": "Bake KUSTOMIZE",
+      "overrides": {},
+      "refId": "81",
+      "requisiteStageRefIds": [
+        "80"
+      ],
+      "restrictExecutionDuringTimeWindow": false,
+      "restrictedExecutionWindow": {
+        "days": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          5
+        ],
+        "whitelist": []
+      },
+      "templateRenderer": "KUSTOMIZE",
+      "type": "bakeManifest"
+    },
+    {
+      "account": "spinnaker",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "manifestArtifactId": "fe49610a-1c20-4352-8c56-1739765cce41",
+      "moniker": {
+        "app": "one"
+      },
+      "name": "Deploy 9",
+      "namespaceOverride": "${parameters.TARGET_NAMESPACE}",
+      "refId": "82",
+      "requiredArtifactIds": [],
+      "requiredArtifacts": [],
+      "requisiteStageRefIds": [
+        "81"
+      ],
+      "skipExpressionEvaluation": true,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false
+        }
+      },
+      "type": "deployManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E90",
+      "refId": "83",
+      "requisiteStageRefIds": [
+        "82"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "manifests",
+          "value": "${#stage(\"Deploy 9\").outputs.manifests}"
+        },
+        {
+          "key": "output",
+          "value": "${#stage(\"Deploy 9\").outputs}"
+        },
+        {
+          "key": "artifacts",
+          "value": "${#stage(\"Deploy 9\").outputs.artifacts}"
+        },
+        {
+          "key": "abc",
+          "value": "${#stage(\"Deploy 9\").outputs}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failFastStatusCodes": [],
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook91",
+      "refId": "84",
+      "requisiteStageRefIds": [
+        "83"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}/${parameters.clusterName}",
+      "waitForCompletion": true
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E91",
+      "refId": "85",
+      "requisiteStageRefIds": [
+        "84"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook91",
+          "value": "${#stage(\"Webhook91\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook92",
+      "refId": "86",
+      "requisiteStageRefIds": [
+        "85"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E92",
+      "refId": "87",
+      "requisiteStageRefIds": [
+        "86"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook92",
+          "value": "${#stage(\"Webhook92\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "deployment ${parameters.DEPLOYMENT}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "88",
+      "requisiteStageRefIds": [
+        "87"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "service ${parameters.SERVICE}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "89",
+      "requisiteStageRefIds": [
+        "88"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "configMap ${parameters.CONFIGMAP}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "90",
+      "requisiteStageRefIds": [
+        "89"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "expectedArtifacts": [
+        {
+          "defaultArtifact": {
+            "customKind": true,
+            "id": "d4c9552b-d83b-463c-8ea7-a0fbff6f4fd7"
+          },
+          "displayName": "hot-lionfish-54",
+          "id": "fe49610a-1c20-4352-8c56-1739765cce41",
+          "matchArtifact": {
+            "artifactAccount": "embedded-artifact",
+            "customKind": false,
+            "id": "809d8029-2886-44dc-a426-8f534e290583",
+            "type": "embedded/base64"
+          },
+          "useDefaultArtifact": false,
+          "usePriorArtifact": false
+        }
+      ],
+      "failPipeline": false,
+      "inputArtifact": {
+        "account": "gitrepo",
+        "artifact": {
+          "artifactAccount": "gitrepo",
+          "customKind": true,
+          "id": "20b1fbfc-a06d-4bd9-9768-6389d85ba09b",
+          "location": "${parameters.BAKE_SUBPATH}",
+          "reference": "${parameters.BAKE_URL}",
+          "type": "git/repo",
+          "version": "${parameters.BAKE_BRANCH}"
+        }
+      },
+      "kustomizeFilePath": "helloWorld/kustomization.yaml",
+      "name": "Bake KUSTOMIZE",
+      "overrides": {},
+      "refId": "91",
+      "requisiteStageRefIds": [
+        "90"
+      ],
+      "restrictExecutionDuringTimeWindow": false,
+      "restrictedExecutionWindow": {
+        "days": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          5
+        ],
+        "whitelist": []
+      },
+      "templateRenderer": "KUSTOMIZE",
+      "type": "bakeManifest"
+    },
+    {
+      "account": "spinnaker",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "manifestArtifactId": "fe49610a-1c20-4352-8c56-1739765cce41",
+      "moniker": {
+        "app": "one"
+      },
+      "name": "Deploy 10",
+      "namespaceOverride": "${parameters.TARGET_NAMESPACE}",
+      "refId": "92",
+      "requiredArtifactIds": [],
+      "requiredArtifacts": [],
+      "requisiteStageRefIds": [
+        "91"
+      ],
+      "skipExpressionEvaluation": true,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false
+        }
+      },
+      "type": "deployManifest"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E100",
+      "refId": "93",
+      "requisiteStageRefIds": [
+        "92"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "manifests",
+          "value": "${#stage(\"Deploy 10\").outputs.manifests}"
+        },
+        {
+          "key": "output",
+          "value": "${#stage(\"Deploy 10\").outputs}"
+        },
+        {
+          "key": "artifacts",
+          "value": "${#stage(\"Deploy 10\").outputs.artifacts}"
+        },
+        {
+          "key": "abc",
+          "value": "${#stage(\"Deploy 10\").outputs}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failFastStatusCodes": [],
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook101",
+      "refId": "94",
+      "requisiteStageRefIds": [
+        "93"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}/${parameters.clusterName}",
+      "waitForCompletion": true
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E101",
+      "refId": "95",
+      "requisiteStageRefIds": [
+        "94"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook101",
+          "value": "${#stage(\"Webhook101\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "method": "GET",
+      "name": "Webhook102",
+      "refId": "96",
+      "requisiteStageRefIds": [
+        "95"
+      ],
+      "statusUrlResolution": "getMethod",
+      "type": "webhook",
+      "url": "${parameters.GATE_URL}/applications/${parameters.application}/clusters/${parameters.account}"
+    },
+    {
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failOnFailedExpressions": true,
+      "failPipeline": false,
+      "name": "E102",
+      "refId": "97",
+      "requisiteStageRefIds": [
+        "96"
+      ],
+      "type": "evaluateVariables",
+      "variables": [
+        {
+          "key": "Webhook102",
+          "value": "${#stage(\"Webhook102\").context.webhook.body}"
+        }
+      ]
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "deployment ${parameters.DEPLOYMENT}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "98",
+      "requisiteStageRefIds": [
+        "97"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "service ${parameters.SERVICE}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "99",
+      "requisiteStageRefIds": [
+        "98"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "spinnaker",
+      "app": "one",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": false,
+      "location": "${parameters.TARGET_NAMESPACE}",
+      "manifestName": "configMap ${parameters.CONFIGMAP}",
+      "mode": "static",
+      "name": "Delete (Manifest)",
+      "options": {
+        "cascading": true
+      },
+      "refId": "100",
+      "requisiteStageRefIds": [
+        "99"
+      ],
+      "type": "deleteManifest"
+    }
+  ],
+  "triggers": []
+}
